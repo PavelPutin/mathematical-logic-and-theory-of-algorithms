@@ -160,6 +160,31 @@ public class MatrixCalculator {
         return newMatrix;
     }
 
+    /**
+     * Возвращает матрицу, обратную переданной.
+     * @param matrix
+     * @return
+     * @throws Exception
+     */
+    public static double[][] getInverseMatrix(double[][] matrix) throws Exception {
+        if (!isSquareMatrix(matrix)) {
+            throw new Exception("Найти обратную матрицу можно только для квадратной матрицы!");
+        }
+
+        double determinant = calcDeterminant(matrix);
+        if (determinant == 0) {
+            throw new Exception("Определитель равен нулю. Найти обратную матрицу невозможно!");
+        }
+
+        double[][] inverseMatrix = new double[matrix.length][matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                inverseMatrix[i][j] = calcAlgebraicAdjunct(matrix, i, j);
+            }
+        }
+        return multiplyByNumber(transpose(inverseMatrix), 1/determinant);
+    }
+
     public static boolean isMatrix(double[][] matrix) {
         for (int i = 0; i < matrix.length - 1; i++) {
             if (matrix[i].length != matrix[i + 1].length) {
