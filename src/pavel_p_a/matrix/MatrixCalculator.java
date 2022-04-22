@@ -146,6 +146,20 @@ public class MatrixCalculator {
         return newMatrix;
     }
 
+    public static double[][] transpose(double[][] matrix) throws Exception {
+        if (!isSquareMatrix(matrix)) {
+            throw new Exception("Транспонировать можно только квадратные матрицы!");
+        }
+
+        double[][] newMatrix = new double[matrix.length][matrix.length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix.length; j++) {
+                newMatrix[i][j] = matrix[j][i];
+            }
+        }
+        return newMatrix;
+    }
+
     public static boolean isMatrix(double[][] matrix) {
         for (int i = 0; i < matrix.length - 1; i++) {
             if (matrix[i].length != matrix[i + 1].length) {
