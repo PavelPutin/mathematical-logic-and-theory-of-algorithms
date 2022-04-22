@@ -44,6 +44,10 @@ public class MatrixCalculator {
     }
 
     public static double calcMinor(double[][] matrix, int[] rowsIndexes, int[] colsIndexes) throws Exception {
+        if (!isMatrix(matrix)) {
+            throw new Exception("Передана не матрица!");
+        }
+
         if (rowsIndexes.length != colsIndexes.length) {
             throw new Exception("Для расчёта минора количество выбранных строк и столбцов должно совпадать!");
         }
@@ -66,6 +70,89 @@ public class MatrixCalculator {
         }
 
         return (((i + j) & 1) == 0 ? 1 : -1) * calcMinor(matrix, i, j);
+    }
+
+    public static double[][] multiplyRowByNumber(double[][] matrix, int targetRow, double lambda) throws Exception {
+        if (!isMatrix(matrix)) {
+            throw new Exception("Передана не матрица!");
+        }
+
+        int rowsNumber = matrix.length, colsNumber = matrix[0].length;
+        double[][] newMatrix = new double[rowsNumber][colsNumber];
+        for (int i = 0; i < rowsNumber; i++) {
+            for (int j = 0; j < colsNumber; j++) {
+                newMatrix[i][j] = matrix[i][j] * (i == targetRow ? lambda : 1);
+            }
+        }
+        return newMatrix;
+    }
+
+    public static double[][] multiplyColByNumber(double[][] matrix, int targetCol, double lambda) throws Exception {
+        if (!isMatrix(matrix)) {
+            throw new Exception("Передана не матрица!");
+        }
+
+        int rowsNumber = matrix.length, colsNumber = matrix[0].length;
+        double[][] newMatrix = new double[rowsNumber][colsNumber];
+        for (int i = 0; i < rowsNumber; i++) {
+            for (int j = 0; j < colsNumber; j++) {
+                newMatrix[i][j] = matrix[i][j] * (j == targetCol ? lambda : 1);
+            }
+        }
+        return newMatrix;
+    }
+
+    public static double[][] multiplyByNumber(double[][] matrix, double lambda) throws Exception {
+        if (!isMatrix(matrix)) {
+            throw new Exception("Передана не матрица!");
+        }
+
+        int rowsNumber = matrix.length, colsNumber = matrix[0].length;
+        double[][] newMatrix = new double[rowsNumber][colsNumber];
+        for (int i = 0; i < rowsNumber; i++) {
+            for (int j = 0; j < colsNumber; j++) {
+                newMatrix[i][j] = matrix[i][j] * lambda;
+            }
+        }
+        return newMatrix;
+    }
+
+    public static double[][] multiply(double[][] matrixA, double[][] matrixB) throws Exception {
+        if (!isMatrix(matrixA)) {
+            throw new Exception("Первый операнд не матрица!");
+        }
+
+        if (!isMatrix(matrixB)) {
+            throw new Exception("Второй операнд не матрица!");
+        }
+
+        int rowsNumberA = matrixA.length, colsNumberA = matrixA[0].length,
+                rowsNumberB = matrixB.length, colsNumberB = matrixB[0].length;
+
+        if (colsNumberA != rowsNumberB) {
+            throw new Exception("Размерности матриц не позволяют их умножить");
+        }
+
+        double[][] newMatrix = new double[rowsNumberA][colsNumberB];
+        for (int i = 0; i < rowsNumberA; i++) {
+            for (int j = 0; j < colsNumberB; j++) {
+                newMatrix[i][j] = 0;
+                for (int k = 0; k < colsNumberA; k++) {
+                    newMatrix[i][j] += matrixA[i][k] * matrixB[k][j];
+                }
+            }
+        }
+
+        return newMatrix;
+    }
+
+    public static boolean isMatrix(double[][] matrix) {
+        for (int i = 0; i < matrix.length - 1; i++) {
+            if (matrix[i].length != matrix[i + 1].length) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static boolean isSquareMatrix(double[][] matrix) {
