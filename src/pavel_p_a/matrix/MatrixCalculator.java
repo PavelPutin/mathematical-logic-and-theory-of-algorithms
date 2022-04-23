@@ -6,6 +6,8 @@ import java.util.Arrays;
 
 public class MatrixCalculator {
 
+    private static final double EPC = 1E-12;
+
     public static double calcDeterminant(double[][] matrix) throws Exception {
         if (!isSquareMatrix(matrix)) {
             throw new Exception("Детерминант можно посчитать только для квадратной матрицы");
@@ -308,7 +310,7 @@ public class MatrixCalculator {
 
         while (col < matrix[0].length) {
             for (int r = currentRow; r < matrix.length; r++) {
-                if (matrix[r][col] != 0) {
+                if (Double.compare(newMatrix[r][col], 0) != 0) {
                     if (r != currentRow) {
                         newMatrix = MatrixCalculator.swapRows(newMatrix, currentRow, r);
                     }
@@ -328,6 +330,29 @@ public class MatrixCalculator {
             foundNonZeroElement = false;
         }
         return newMatrix;
+    }
+
+    public static int calcRank(double[][] matrix) throws Exception {
+        if (!isMatrix(matrix)) {
+            throw new Exception("Передана не матрица!");
+        }
+
+        double[][] stairMatrix = toStair(matrix);
+        int rank = 0;
+        for (int r = 0; r < stairMatrix.length; r++) {
+            boolean isZeroRow = true;
+            for (int c = 0; c < stairMatrix[0].length; c++) {
+                if (Double.compare(stairMatrix[r][c], 0) != 0) {
+                    isZeroRow = false;
+                    break;
+                }
+            }
+
+            if (!isZeroRow) {
+                rank++;
+            }
+        }
+        return rank;
     }
 
     public static double[][] addUpRows(double[][] matrix, int rowIndex, int targetRowIndex, double lambda) throws Exception {
