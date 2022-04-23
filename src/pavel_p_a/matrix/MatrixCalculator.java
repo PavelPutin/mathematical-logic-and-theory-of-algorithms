@@ -1,8 +1,7 @@
 package pavel_p_a.matrix;
 
-import java.util.Arrays;
-
 public class MatrixCalculator {
+
     public static double calcDeterminant(double[][] matrix) throws Exception {
         if (!isSquareMatrix(matrix)) {
             throw new Exception("Детерминант можно посчитать только для квадратной матрицы");
