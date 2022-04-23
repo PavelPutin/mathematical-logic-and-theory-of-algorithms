@@ -232,6 +232,28 @@ public class MatrixCalculator {
         return newMatrix;
     }
 
+    public static double[] multiply(double[][] matrixA, double[] vector) throws Exception {
+        if (!isMatrix(matrixA)) {
+            throw new Exception("Первый операнд не матрица!");
+        }
+
+        int rowsNumberA = matrixA.length, colsNumberA = matrixA[0].length,
+                rowsNumberB = vector.length;
+
+        if (colsNumberA != rowsNumberB) {
+            throw new Exception("Размерности матриц не позволяют их умножить");
+        }
+
+        double[] newMatrix = new double[rowsNumberA];
+        for (int i = 0; i < rowsNumberA; i++) {
+            newMatrix[i] = 0;
+            for (int k = 0; k < colsNumberA; k++) {
+                newMatrix[i] += matrixA[i][k] * vector[k];
+            }
+        }
+        return newMatrix;
+    }
+
     public static double[][] transpose(double[][] matrix) throws Exception {
         if (!isSquareMatrix(matrix)) {
             throw new Exception("Транспонировать можно только квадратные матрицы!");
