@@ -168,6 +168,26 @@ public class MatrixCalculator {
         return newMatrix;
     }
 
+    public static double[][] replaceColumn(double[][] matrix, double[] col, int replacementIndex) throws Exception {
+        if (!isMatrix(matrix)) {
+            throw new Exception("Передана не матрица!");
+        }
+
+        if (matrix.length != col.length) {
+            throw new Exception("Ошибка размерностей матрицы и столбца");
+        }
+
+        int newMatrixRowsNumber = matrix.length,
+                newMatrixColsNumber = matrix[0].length;
+        double[][] newMatrix = new double[newMatrixRowsNumber][newMatrixColsNumber];
+        for (int i = 0; i < newMatrixRowsNumber; i++) {
+            for (int j = 0; j < newMatrixColsNumber; j++) {
+                newMatrix[i][j] = j == replacementIndex ? col[i] : matrix[i][j];
+            }
+        }
+        return newMatrix;
+    }
+
     public static double[][] multiplyByNumber(double[][] matrix, double lambda) throws Exception {
         if (!isMatrix(matrix)) {
             throw new Exception("Передана не матрица!");
