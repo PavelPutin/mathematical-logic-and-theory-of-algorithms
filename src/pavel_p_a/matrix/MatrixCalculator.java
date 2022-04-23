@@ -121,6 +121,26 @@ public class MatrixCalculator {
         return newMatrix;
     }
 
+    public static double[][] swapCols(double[][] matrix, int col1, int col2) throws Exception {
+        if (!isMatrix(matrix)) {
+            throw new Exception("Передана не матрица!");
+        }
+
+        double[][] newMatrix = new double[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (j == col1) {
+                    newMatrix[i][j] = matrix[i][col2];
+                } else if (j == col2) {
+                    newMatrix[i][j] = matrix[i][col1];
+                } else {
+                    newMatrix[i][j] = matrix[i][j];
+                }
+            }
+        }
+        return newMatrix;
+    }
+
     public static double[][] multiplyByNumber(double[][] matrix, double lambda) throws Exception {
         if (!isMatrix(matrix)) {
             throw new Exception("Передана не матрица!");
