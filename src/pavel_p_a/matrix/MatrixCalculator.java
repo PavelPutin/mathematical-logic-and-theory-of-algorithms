@@ -1,5 +1,9 @@
 package pavel_p_a.matrix;
 
+import util.ArrayUtils;
+
+import java.util.Arrays;
+
 public class MatrixCalculator {
 
     public static double calcDeterminant(double[][] matrix) throws Exception {
@@ -291,6 +295,50 @@ public class MatrixCalculator {
             }
         }
         return multiplyByNumber(transpose(inverseMatrix), 1/determinant);
+    }
+
+    /*public static double[][] toStair(double[][] matrix) throws Exception {
+        if (!isMatrix(matrix)) {
+            throw new Exception("Передана не матрица!");
+        }
+
+        double[][] newMatrix = Arrays.copyOf(matrix, matrix.length);
+        int col = 0, currentRow = 0;
+        boolean foundNonZeroElement = false;
+
+        while (col < matrix[0].length) {
+            for (int r = currentRow; r < matrix.length; r++) {
+                if (matrix[r][col] != 0 && r != currentRow) {
+                    MatrixCalculator.swapCols(newMatrix, currentRow, r);
+                    foundNonZeroElement = true;
+                    break;
+                }
+            }
+
+            if (foundNonZeroElement) {
+                for (int r = currentRow + 1; r < matrix.length; r++) {
+                    double lambda = newMatrix[r][col] / newMatrix[currentRow][col];
+                    newMatrix = MatrixCalculator.addUpRows(newMatrix, r, currentRow, lambda);
+                }
+                currentRow++;
+            }
+            col++;
+        }
+        return newMatrix;
+    }*/
+
+    public static double[][] addUpRows(double[][] matrix, int rowIndex, int targetRowIndex, double lambda) throws Exception {
+        if (!isMatrix(matrix)) {
+            throw new Exception("Передана не матрица!");
+        }
+
+        double[][] newMatrix = new double[matrix.length][matrix[0].length];
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                newMatrix[i][j] = matrix[i][j] + ((i == targetRowIndex) ? lambda * matrix[rowIndex][j] : 0);
+            }
+        }
+        return newMatrix;
     }
 
     public static boolean isMatrix(double[][] matrix) {
