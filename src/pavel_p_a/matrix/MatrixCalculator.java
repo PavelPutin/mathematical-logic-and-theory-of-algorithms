@@ -174,6 +174,11 @@ public class MatrixCalculator {
         return newMatrix;
     }
 
+    public static double[][] insertCol(double[][] matrix, double[] col) throws Exception {
+        return insertCol(matrix, col, matrix[0].length);
+    }
+
+
     public static double[][] replaceColumn(double[][] matrix, double[] col, int replacementIndex) throws Exception {
         if (!isMatrix(matrix)) {
             throw new Exception("Передана не матрица!");
@@ -340,19 +345,24 @@ public class MatrixCalculator {
         double[][] stairMatrix = toStair(matrix);
         int rank = 0;
         for (int r = 0; r < stairMatrix.length; r++) {
-            boolean isZeroRow = true;
-            for (int c = 0; c < stairMatrix[0].length; c++) {
-                if (Double.compare(stairMatrix[r][c], 0) != 0) {
-                    isZeroRow = false;
-                    break;
-                }
-            }
-
-            if (!isZeroRow) {
+            if (!isZeroRow(stairMatrix, r)) {
                 rank++;
             }
         }
         return rank;
+    }
+
+    public static boolean isZeroRow(double[][] matrix, int rowIndex) throws Exception {
+        if (!isMatrix(matrix)) {
+            throw new Exception("Передана не матрица!");
+        }
+
+        for (int c = 0; c < matrix[0].length; c++) {
+            if (Double.compare(matrix[rowIndex][c], 0) != 0) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static double[][] addUpRows(double[][] matrix, int rowIndex, int targetRowIndex, double lambda) throws Exception {
