@@ -141,6 +141,33 @@ public class MatrixCalculator {
         return newMatrix;
     }
 
+    public static double[][] insertCol(double[][] matrix, double[] col, int insertionIndex) throws Exception {
+        if (!isMatrix(matrix)) {
+            throw new Exception("Передана не матрица!");
+        }
+
+        if (matrix.length != col.length) {
+            throw new Exception("Ошибка размерностей матрицы и столбца");
+        }
+
+        int newMatrixRowsNumber = matrix.length,
+                newMatrixColsNumber = matrix[0].length + 1;
+        double[][] newMatrix = new double[newMatrixRowsNumber][newMatrixColsNumber];
+        boolean inserted = false;
+        for (int i = 0; i < newMatrixRowsNumber; i++) {
+            for (int j = 0; j < newMatrixColsNumber; j++) {
+                if (j == insertionIndex) {
+                    newMatrix[i][j] = col[i];
+                    inserted = true;
+                } else {
+                    newMatrix[i][j] = matrix[i][j - (inserted ? 1 : 0)];
+                }
+            }
+            inserted = false;
+        }
+        return newMatrix;
+    }
+
     public static double[][] multiplyByNumber(double[][] matrix, double lambda) throws Exception {
         if (!isMatrix(matrix)) {
             throw new Exception("Передана не матрица!");
