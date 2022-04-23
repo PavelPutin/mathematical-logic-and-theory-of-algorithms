@@ -297,7 +297,7 @@ public class MatrixCalculator {
         return multiplyByNumber(transpose(inverseMatrix), 1/determinant);
     }
 
-    /*public static double[][] toStair(double[][] matrix) throws Exception {
+    public static double[][] toStair(double[][] matrix) throws Exception {
         if (!isMatrix(matrix)) {
             throw new Exception("Передана не матрица!");
         }
@@ -308,8 +308,10 @@ public class MatrixCalculator {
 
         while (col < matrix[0].length) {
             for (int r = currentRow; r < matrix.length; r++) {
-                if (matrix[r][col] != 0 && r != currentRow) {
-                    MatrixCalculator.swapCols(newMatrix, currentRow, r);
+                if (matrix[r][col] != 0) {
+                    if (r != currentRow) {
+                        newMatrix = MatrixCalculator.swapRows(newMatrix, currentRow, r);
+                    }
                     foundNonZeroElement = true;
                     break;
                 }
@@ -317,15 +319,16 @@ public class MatrixCalculator {
 
             if (foundNonZeroElement) {
                 for (int r = currentRow + 1; r < matrix.length; r++) {
-                    double lambda = newMatrix[r][col] / newMatrix[currentRow][col];
-                    newMatrix = MatrixCalculator.addUpRows(newMatrix, r, currentRow, lambda);
+                    double lambda = -(newMatrix[r][col] / newMatrix[currentRow][col]);
+                    newMatrix = MatrixCalculator.addUpRows(newMatrix, currentRow, r, lambda);
                 }
                 currentRow++;
             }
             col++;
+            foundNonZeroElement = false;
         }
         return newMatrix;
-    }*/
+    }
 
     public static double[][] addUpRows(double[][] matrix, int rowIndex, int targetRowIndex, double lambda) throws Exception {
         if (!isMatrix(matrix)) {
