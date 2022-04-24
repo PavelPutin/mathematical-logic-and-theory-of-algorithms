@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class MatrixCalculator {
 
-    private static final double EPC = 1E-12;
+    private static final double EPS = 1E-12;
 
     public static double calcDeterminant(double[][] matrix) throws Exception {
         if (!isSquareMatrix(matrix)) {
@@ -315,7 +315,7 @@ public class MatrixCalculator {
 
         while (col < matrix[0].length) {
             for (int r = currentRow; r < matrix.length; r++) {
-                if (Double.compare(newMatrix[r][col], 0) != 0) {
+                if (Math.abs(matrix[r][col] - 0) >= EPS) {
                     if (r != currentRow) {
                         newMatrix = MatrixCalculator.swapRows(newMatrix, currentRow, r);
                     }
@@ -358,7 +358,7 @@ public class MatrixCalculator {
         }
 
         for (int c = 0; c < matrix[0].length; c++) {
-            if (Double.compare(matrix[rowIndex][c], 0) != 0) {
+            if (Math.abs(matrix[rowIndex][c] - 0) >= EPS) {
                 return false;
             }
         }
