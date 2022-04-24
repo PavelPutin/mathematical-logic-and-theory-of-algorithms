@@ -1,12 +1,13 @@
 package pavel_p_a.task1;
 
-import pavel_p_a.matrix.SquareMatrix;
+import pavel_p_a.matrix.MatrixCalculator;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class Main {
@@ -23,21 +24,20 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         double[][] matrixData = readSquareMatrixFromFile(SOURCE_FILE_PATH.toFile());
-        SquareMatrix matrix = new SquareMatrix(matrixData);
 
         long start = System.currentTimeMillis();
 
-        double det = matrix.getDet();
+        double det = MatrixCalculator.calcDeterminant(matrixData);
 
         long finish = System.currentTimeMillis();
         System.out.printf("Затраченное время: %d %n", finish - start);
         // затрачено на 13х13 2027840 мс = 2027 с = 33 мин
         // затрачено на 10х10 1296 мс = 1.3 с
-        SquareMatrix inverse = matrix.getInverse();
+        double[][] inverse = MatrixCalculator.getInverseMatrix(matrixData);
 
         String result = "" + det + "\n";
         result += inverse + "\n\n";
-        result += matrix.multiply(inverse).toString();
+        result += Arrays.toString(MatrixCalculator.multiply(matrixData, inverse));
         writeToFile(RESULT_FILE_PATH.toFile(), result);
 
     }
