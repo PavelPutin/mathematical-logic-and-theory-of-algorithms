@@ -105,7 +105,7 @@ public class GaussMethod {
         for (int i = 0; i < result.length; i++) {
             result[i] = 0;
         }
-        
+
         int c = 0;
         for (int x : columnsIndexes) {
             result[x] = intermediateResult[c++];
