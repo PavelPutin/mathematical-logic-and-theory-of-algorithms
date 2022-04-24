@@ -15,7 +15,7 @@ public class CrammerMethod {
         double delta = MatrixCalculator.calcDeterminant(coefficients);
 
         if (delta == 0) {
-            throw new Exception("Определитель матрицы коэффициентов равен нулю. Невозможно решить методом Крамера!");
+            throw new CantSolveException("Определитель матрицы коэффициентов равен нулю. Невозможно решить методом Крамера!");
         }
 
         double[] results = new double[coefficients.length];

@@ -53,6 +53,14 @@ public class GaussMethod {
             return result;
         }
 
+        if (rankStairCoefficients == rankExtended && rankStairCoefficients == 0) {
+            double[] result = new double[stairCoefficients[0].length];
+            for (int i = 0; i < result.length; i++) {
+                result[i] = 0;
+            }
+            return result;
+        }
+
         double[][] coefficientsOfUnknownVariables = new double[rankStairCoefficients][rankStairCoefficients];
         int[] rowsIndexes = new int[rankStairCoefficients];
         int[] columnsIndexes = new int[rankStairCoefficients];

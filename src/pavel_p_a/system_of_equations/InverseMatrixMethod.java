@@ -15,7 +15,7 @@ public class InverseMatrixMethod {
         double delta = MatrixCalculator.calcDeterminant(coefficients);
 
         if (delta == 0) {
-            throw new Exception("Определитель матрицы коэффициентов равен нулю. Невозможно решить методом обратной матрицы!");
+            throw new CantSolveException("Определитель матрицы коэффициентов равен нулю. Невозможно решить методом обратной матрицы!");
         }
 
         double[] result = MatrixCalculator.multiply(
