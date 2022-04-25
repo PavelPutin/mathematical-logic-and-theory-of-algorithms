@@ -4,8 +4,6 @@ import pavel_p_a.combinatory.CombinationsWithoutRepetitions;
 import pavel_p_a.matrix.MatrixCalculator;
 import util.ArrayUtils;
 
-import java.util.Arrays;
-
 public class GaussMethod {
     public static double[] solve(double[][] coefficients, double[] freeTerms) throws Exception {
         if (!MatrixCalculator.isMatrix(coefficients)) {
@@ -16,6 +14,9 @@ public class GaussMethod {
             throw new Exception("Не совпадает количество свободных членов и уравнений!");
         }
 
+        /*
+        Прямой ход: приводим расширенную матрицу и матрицу коэффициентов к ступенчатому виду.
+         */
         double[][] stairExtendedMatrix = MatrixCalculator.toStair(
                 MatrixCalculator.insertCol(coefficients, freeTerms)
         );
@@ -27,13 +28,16 @@ public class GaussMethod {
             }
         }
 
+        // Определяем ранги матрицы коэффициентов
         int rankExtended = MatrixCalculator.calcRank(stairExtendedMatrix),
                 rankStairCoefficients = MatrixCalculator.calcRank(stairCoefficients);
 
+        // система несовместна
         if (rankExtended > rankStairCoefficients) {
             return new double[0];
         }
 
+        // система совместна и определена
         if (rankStairCoefficients == coefficients[0].length) {
             double[] result = new double[stairExtendedMatrix[0].length - 1];
             for (int r = stairExtendedMatrix.length - 1; r >= 0; r--) {
@@ -53,6 +57,7 @@ public class GaussMethod {
             return result;
         }
 
+        // система совместна и определена, но ранг равен нулю
         if (rankStairCoefficients == rankExtended && rankStairCoefficients == 0) {
             double[] result = new double[stairCoefficients[0].length];
             for (int i = 0; i < result.length; i++) {
@@ -61,6 +66,7 @@ public class GaussMethod {
             return result;
         }
 
+        // система совместна, но не определена
         double[][] coefficientsOfUnknownVariables = new double[rankStairCoefficients][rankStairCoefficients];
         int[] rowsIndexes = new int[rankStairCoefficients];
         int[] columnsIndexes = new int[rankStairCoefficients];
@@ -68,6 +74,8 @@ public class GaussMethod {
         for (int i = 0; i < rankStairCoefficients; i++) {
             rowsIndexes[i] = i;
         }
+
+        // Выбираем базисный минор. Элементы, входящие в этот минор являются базисными неизвестными
         for (Integer[] IntegerColumnsIndexes : new CombinationsWithoutRepetitions(coefficients[0].length, rankStairCoefficients)) {
             columnsIndexes = ArrayUtils.toPrimitive(IntegerColumnsIndexes);
             double determinant = MatrixCalculator.calcMinor(stairCoefficients, rowsIndexes, columnsIndexes);
@@ -88,6 +96,7 @@ public class GaussMethod {
             }
         }
 
+        // определяем свободные члены, с учётом свободных переменных
         double[] newFreeTerms = new double[rankStairCoefficients];
         int freeVariableIndex = 0;
         for (int i = 0; i < stairCoefficients[0].length; i++) {
@@ -107,7 +116,7 @@ public class GaussMethod {
         for (int i = 0; i < newFreeTerms.length; i++) {
             newFreeTerms[i] = stairExtendedMatrix[i][stairExtendedMatrix[0].length - 1] - stairExtendedMatrix[i][freeVariableIndex];
         }
-
+        // Решаем уже определённую систему
         double[] intermediateResult = GaussMethod.solve(coefficientsOfUnknownVariables, newFreeTerms);
         double[] result = new double[coefficients[0].length];
         for (int i = 0; i < result.length; i++) {
