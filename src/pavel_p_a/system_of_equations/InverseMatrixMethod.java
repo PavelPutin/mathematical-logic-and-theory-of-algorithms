@@ -3,7 +3,7 @@ package pavel_p_a.system_of_equations;
 import pavel_p_a.matrix.MatrixCalculator;
 
 public class InverseMatrixMethod {
-    public static double[] solve(double[][] coefficients, double[] freeTerms) throws Exception {
+    public static double[][] solve(double[][] coefficients, double[] freeTerms) throws Exception {
         if (!MatrixCalculator.isSquareMatrix(coefficients)) {
             throw new Exception("Метод Крамера применим только тогда, когда число неизвестных равно числу уравнений!");
         }
@@ -22,6 +22,8 @@ public class InverseMatrixMethod {
                 MatrixCalculator.getInverseMatrix(coefficients), freeTerms
         );
 
-        return result;
+        double[][] temp = new double[1][result.length];
+        System.arraycopy(result, 0, temp[0], 0, result.length);
+        return temp;
     }
 }

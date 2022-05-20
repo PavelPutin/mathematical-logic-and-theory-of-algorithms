@@ -4,8 +4,10 @@ import pavel_p_a.combinatory.CombinationsWithoutRepetitions;
 import pavel_p_a.matrix.MatrixCalculator;
 import util.ArrayUtils;
 
+import java.util.Arrays;
+
 public class GaussMethod {
-    public static double[] solve(double[][] coefficients, double[] freeTerms) throws Exception {
+    public static double[][] solve(double[][] coefficients, double[] freeTerms, int resultsQuantity) throws Exception {
         if (!MatrixCalculator.isMatrix(coefficients)) {
             throw new Exception("Передана не матрица!");
         }
@@ -34,35 +36,32 @@ public class GaussMethod {
 
         // система несовместна
         if (rankExtended > rankStairCoefficients) {
-            return new double[0];
+            return new double[0][0];
         }
 
         // система совместна и определена
         if (rankStairCoefficients == coefficients[0].length) {
-            double[] result = new double[stairExtendedMatrix[0].length - 1];
+            double[][] result = new double[1][stairExtendedMatrix[0].length - 1];
             for (int r = stairExtendedMatrix.length - 1; r >= 0; r--) {
                 if (MatrixCalculator.isZeroRow(stairExtendedMatrix, r)) {
                     continue;
                 }
                 int freeTermIndex = stairExtendedMatrix[0].length - 1;
-                result[r] = stairExtendedMatrix[r][freeTermIndex];
+                result[0][r] = stairExtendedMatrix[r][freeTermIndex];
 
-                for (int c = freeTermIndex - 1, k = result.length - 1; c > r; c--, k--) {
-                    result[r] -= stairExtendedMatrix[r][c] * result[k];
+                for (int c = freeTermIndex - 1, k = result[0].length - 1; c > r; c--, k--) {
+                    result[0][r] -= stairExtendedMatrix[r][c] * result[0][k];
                 }
 
-                result[r] /= stairExtendedMatrix[r][r];
+                result[0][r] /= stairExtendedMatrix[r][r];
             }
-
             return result;
         }
 
         // система совместна и определена, но ранг равен нулю
         if (rankStairCoefficients == rankExtended && rankStairCoefficients == 0) {
-            double[] result = new double[stairCoefficients[0].length];
-            for (int i = 0; i < result.length; i++) {
-                result[i] = 0;
-            }
+            double[][] result = new double[1][stairCoefficients[0].length];
+            Arrays.fill(result[0], 0);
             return result;
         }
 
@@ -96,9 +95,12 @@ public class GaussMethod {
             }
         }
 
+        int freeVariablesNumber = stairCoefficients[0].length - rankStairCoefficients;
+        int realResultsQuantity = Math.min(freeVariablesNumber, resultsQuantity);
         // определяем свободные члены, с учётом свободных переменных
-        double[] newFreeTerms = new double[rankStairCoefficients];
-        int freeVariableIndex = 0;
+
+        int[] freeVariableIndexes = new int[realResultsQuantity];
+        int index = 0;
         for (int i = 0; i < stairCoefficients[0].length; i++) {
             boolean matched = false;
             for (int x : columnsIndexes) {
@@ -108,27 +110,33 @@ public class GaussMethod {
                 }
             }
             if (!matched) {
-                freeVariableIndex = i;
-                break;
+                freeVariableIndexes[index++] = i;
             }
         }
 
-        for (int i = 0; i < newFreeTerms.length; i++) {
-            newFreeTerms[i] = stairExtendedMatrix[i][stairExtendedMatrix[0].length - 1] - stairExtendedMatrix[i][freeVariableIndex];
-        }
         // Решаем уже определённую систему
-        double[] intermediateResult = GaussMethod.solve(coefficientsOfUnknownVariables, newFreeTerms);
-        double[] result = new double[coefficients[0].length];
-        for (int i = 0; i < result.length; i++) {
-            result[i] = 0;
+        double[][] result = new double[realResultsQuantity][coefficients[0].length];
+        for (double[] doubles : result) {
+            Arrays.fill(doubles, 0);
         }
 
-        int c = 0;
-        for (int x : columnsIndexes) {
-            result[x] = intermediateResult[c++];
-        }
+        for (int i = 0; i < freeVariableIndexes.length; i++) {
+            double[] newFreeTerms = new double[rankStairCoefficients];
+            for (int j = 0; j < newFreeTerms.length; j++) {
+                int lastElementInRowIndex = stairExtendedMatrix[0].length - 1;
+                double freeTerm = stairExtendedMatrix[j][lastElementInRowIndex];
+                double freeVariableCoefficient = stairExtendedMatrix[j][freeVariableIndexes[i]];
+                newFreeTerms[j] = freeTerm - freeVariableCoefficient;
+            }
 
-        result[freeVariableIndex] = 1;
+            double[][] intermediateResult = GaussMethod.solve(coefficientsOfUnknownVariables, newFreeTerms, 1);
+            int c = 0;
+            for (int x : columnsIndexes) {
+                result[i][x] = intermediateResult[0][c++];
+            }
+
+            result[i][freeVariableIndexes[i]] = 1;
+        }
 
         return result;
     }
