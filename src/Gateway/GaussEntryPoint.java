@@ -1,11 +1,16 @@
 package Gateway;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GaussEntryPoint {
-    public static class Response {
+    /**
+     * Ответ java "сервера"
+     */
+    public static class Response { // выходные данные напиши такие, которые будут тебе удобны
         private List<List<Double>> eVectors;
+
+        // можно опциально передать: код выполнения/текст ошибки
 
         public Response(List<List<Double>> eVectors) {
             this.eVectors = eVectors;
@@ -16,7 +21,13 @@ public class GaussEntryPoint {
         }
     }
 
-    public Response getResponseForMatrix(Double[][] matrix, Double[] vals) {
+    /**
+     * Основная функция, вызываемая python клиентом
+     *
+     * @param matrix
+     * @param vals   собственные значения и их кратности
+     */
+    public Response getResponseForMatrix(Double[][] matrix, Map<Double, Integer> vals) {
         // тут вызов гаусса и создание класса ответа
         Response response = null; /* = new Response(...);*/
 
