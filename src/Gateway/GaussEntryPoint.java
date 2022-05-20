@@ -8,15 +8,15 @@ public class GaussEntryPoint {
      * Ответ java "сервера"
      */
     public static class Response { // выходные данные напиши такие, которые будут тебе удобны
-        private List<List<Double>> eVectors;
+        private Map<Integer, List<List<Double>>> eVectors;
 
         // можно опциально передать: код выполнения/текст ошибки
 
-        public Response(List<List<Double>> eVectors) {
+        public Response(Map<Integer, List<List<Double>>> eVectors) {
             this.eVectors = eVectors;
         }
 
-        public List<List<Double>> getEVectors() {
+        public Map<Integer, List<List<Double>>> getEVectors() {
             return eVectors;
         }
     }
