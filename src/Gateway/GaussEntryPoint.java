@@ -49,7 +49,7 @@ public class GaussEntryPoint {
             double[][] result = GaussMethod.solve(nm, ft, s);
 
             eVectors.put(val, new ArrayList<>());
-            for (int i = 0; i < s; i++) {
+            for (int i = 0; i < result.length; i++) {
                 List<Double> vector = new ArrayList<>();
                 for (int j = 0; j < result[0].length; j++) {
                     vector.add(result[i][j]);

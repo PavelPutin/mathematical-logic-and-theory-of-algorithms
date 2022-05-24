@@ -60,8 +60,12 @@ public class GaussMethod {
 
         // система совместна и определена, но ранг равен нулю
         if (rankStairCoefficients == rankExtended && rankStairCoefficients == 0) {
-            double[][] result = new double[1][stairCoefficients[0].length];
-            Arrays.fill(result[0], 0);
+            double[][] result = new double[resultsQuantity][stairCoefficients[0].length];
+            for (int i = 0; i < result.length; i++) {
+                for (int j = 0; j < result[0].length; j++) {
+                    result[i][j] = i == j ? 1 : 0;
+                }
+            }
             return result;
         }
 
