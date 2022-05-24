@@ -315,7 +315,7 @@ public class MatrixCalculator {
 
         while (col < matrix[0].length) {
             for (int r = currentRow; r < matrix.length; r++) {
-                if (Math.abs(matrix[r][col] - 0) >= EPS) {
+                if (Math.abs(newMatrix[r][col] - 0) >= EPS) {
                     if (r != currentRow) {
                         newMatrix = MatrixCalculator.swapRows(newMatrix, currentRow, r);
                     }
@@ -343,6 +343,16 @@ public class MatrixCalculator {
         }
 
         double[][] stairMatrix = toStair(matrix);
+
+
+        for (int r = 0; r < stairMatrix.length; r++) {
+            for (int c = 0; c < stairMatrix[0].length; c++) {
+                System.out.print(stairMatrix[r][c] + " ");
+            }
+            System.out.println();
+        }
+
+
         int rank = 0;
         for (int r = 0; r < stairMatrix.length; r++) {
             if (!isZeroRow(stairMatrix, r)) {
