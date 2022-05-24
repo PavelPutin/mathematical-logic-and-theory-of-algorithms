@@ -315,7 +315,7 @@ public class MatrixCalculator {
 
         while (col < matrix[0].length) {
             for (int r = currentRow; r < matrix.length; r++) {
-                if (Math.abs(matrix[r][col] - 0) >= EPS) {
+                if (Math.abs(newMatrix[r][col] - 0) >= EPS) {
                     if (r != currentRow) {
                         newMatrix = MatrixCalculator.swapRows(newMatrix, currentRow, r);
                     }
