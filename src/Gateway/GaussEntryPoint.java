@@ -41,7 +41,10 @@ public class GaussEntryPoint {
                 }
             }
             int rank = MatrixCalculator.calcRank(nm);
-            int s = nm.length - rank;
+            int s = 1;
+            if (number > 1) {
+                s = nm.length - rank;
+            }
             double[] ft = new double[nm.length];
             double[][] result = GaussMethod.solve(nm, ft, s);
 

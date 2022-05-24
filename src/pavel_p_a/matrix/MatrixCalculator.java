@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 public class MatrixCalculator {
 
-    private static final double EPS = 1E-12;
+    private static final double EPS = 1E-3;
 
     public static double calcDeterminant(double[][] matrix) throws Exception {
         if (!isSquareMatrix(matrix)) {
