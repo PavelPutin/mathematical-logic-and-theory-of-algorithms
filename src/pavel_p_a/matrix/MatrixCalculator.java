@@ -343,16 +343,6 @@ public class MatrixCalculator {
         }
 
         double[][] stairMatrix = toStair(matrix);
-
-
-        for (int r = 0; r < stairMatrix.length; r++) {
-            for (int c = 0; c < stairMatrix[0].length; c++) {
-                System.out.print(stairMatrix[r][c] + " ");
-            }
-            System.out.println();
-        }
-
-
         int rank = 0;
         for (int r = 0; r < stairMatrix.length; r++) {
             if (!isZeroRow(stairMatrix, r)) {
