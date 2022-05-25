@@ -3,7 +3,7 @@ package pavel_p_a.system_of_equations;
 import pavel_p_a.matrix.MatrixCalculator;
 
 public class CrammerMethod {
-    public static double[] solve(double[][] coefficients, double[] freeTerms) throws Exception {
+    public static double[][] solve(double[][] coefficients, double[] freeTerms) throws Exception {
         if (!MatrixCalculator.isSquareMatrix(coefficients)) {
             throw new Exception("Метод Крамера применим только тогда, когда число неизвестных равно числу уравнений!");
         }
@@ -18,9 +18,9 @@ public class CrammerMethod {
             throw new CantSolveException("Определитель матрицы коэффициентов равен нулю. Невозможно решить методом Крамера!");
         }
 
-        double[] results = new double[coefficients.length];
-        for (int i = 0; i < results.length; i++) {
-            results[i] = MatrixCalculator.calcDeterminant(
+        double[][] results = new double[1][coefficients.length];
+        for (int i = 0; i < results[0].length; i++) {
+            results[0][i] = MatrixCalculator.calcDeterminant(
                     MatrixCalculator.replaceColumn(coefficients, freeTerms, i)
             ) / delta;
         }

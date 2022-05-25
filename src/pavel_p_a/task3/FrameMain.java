@@ -95,8 +95,8 @@ public class FrameMain extends JFrame {
                 double[][] coefficients = JTableUtils.readDoubleMatrixFromJTable(tableCoefficients);
                 double[] freeTerms = JTableUtils.readDoubleArrayFromJTable(tableFreeTerms);
 
-                double[] result = switch(solutionMethod) {
-                    case GAUSS -> GaussMethod.solve(coefficients, freeTerms);
+                double[][] result = switch(solutionMethod) {
+                    case GAUSS -> GaussMethod.solve(coefficients, freeTerms, 2);
                     case CRAMER -> CrammerMethod.solve(coefficients, freeTerms);
                     case INVERSE_MATRIX -> InverseMatrixMethod.solve(coefficients, freeTerms);
                 };
